@@ -14,25 +14,28 @@ docker push <your docker repo>/postfix-server
 
 ## Run
 
-The example of running the image assumes you already have a milter application running to receive the messages from Postfix (example will reference `<milter host>` and `<milter port>`).
+This example of running the server uses CloudFoundry, and uses some placeholder values to make things clearer:
 
-To run the example on CloudFoundry:
+- Milter app running on 10.0.0.1 port 8080
+- CF TCP routing already set up using domain tcp.pcf.example.com
+
+To run the example:
 
 ```
 cf push --docker-image <your docker repo>/postfix-server --no-route -i 0
 
-cf set-env postfix-server JILTER_HOST <milter host>
-cf set-env postfix-server JILTER_PORT <milter port>
+cf set-env postfix-server JILTER_HOST 10.0.0.1
+cf set-env postfix-server JILTER_PORT 8080
 
 cf scale postfix-server -i 1
 
-cf map-route postfix-server <your tcp domain> --random-port
+cf map-route postfix-server tcp.pcf.example.com --port 1116
 ```
 
-This will expose the SMTP port out on a random port selected by PCF. You can force a specific port using `--port` instead of `--random-port`.
+This will expose the SMTP port out via TCP routing on port 1116.
 
 You can validate connectivity like so:
 
 ```
-nc <your tcp domain> <port from map-route>
+nc tcp.pcf.example.com 1116
 ```
