@@ -1,0 +1,5 @@
+---
+applications:
+- name: postfix-server
+  memory: 1G
+  health-check-type: process
