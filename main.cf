@@ -44,6 +44,7 @@ inet_interfaces = all
 inet_protocols = ipv4
 smtpd_milters = inet:$JILTER_HOST:$JILTER_PORT
 compatibility_level = 2
+smtp_dns_support_level = disabled
 disable_dns_lookups = yes
 allow_min_user = yes
 message_drop_headers =
